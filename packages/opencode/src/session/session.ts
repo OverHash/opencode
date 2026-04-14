@@ -8,7 +8,7 @@ import { type ProviderMetadata, type LanguageModelUsage } from "ai"
 import { Flag } from "../flag/flag"
 import { InstallationVersion } from "../installation/version"
 
-import { Database, NotFoundError, eq, and, gte, isNull, desc, like, inArray, lt } from "../storage"
+import { Database, NotFoundError, eq, and, gte, isNull, desc, like, inArray, lt, sql } from "../storage"
 import { SyncEvent } from "../sync"
 import type { SQL } from "../storage"
 import { PartTable, SessionTable } from "./session.sql"
@@ -715,7 +715,9 @@ export function* list(input?: {
   }
   if (!Flag.OPENCODE_EXPERIMENTAL_WORKSPACES) {
     if (input?.directory) {
-      conditions.push(eq(SessionTable.directory, input.directory))
+      conditions.push(
+        sql`(${SessionTable.directory} = ${input.directory} OR ${SessionTable.directory} LIKE ${path.join(input.directory, "%")})`,
+      )
     }
   }
   if (input?.roots) {
