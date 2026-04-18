@@ -2,13 +2,24 @@ import { afterEach, describe, expect, test } from "bun:test"
 import { mkdir } from "fs/promises"
 import { createOpencodeClient as v1 } from "@opencode-ai/sdk"
 import { createOpencodeClient as v2 } from "@opencode-ai/sdk/v2"
+import { Effect } from "effect"
 import { Instance } from "../../src/project/instance"
 import { Server } from "../../src/server/server"
-import { Session } from "../../src/session"
-import { Log } from "../../src/util/log"
+import { Session as SessionNs } from "../../src/session"
+import { Log } from "../../src/util"
 import { tmpdir } from "../fixture/fixture"
 
-Log.init({ print: false })
+void Log.init({ print: false })
+
+function run<A, E>(fx: Effect.Effect<A, E, SessionNs.Service>) {
+  return Effect.runPromise(fx.pipe(Effect.provide(SessionNs.defaultLayer)))
+}
+
+const svc = {
+  create(input?: SessionNs.CreateInput) {
+    return run(SessionNs.Service.use((svc) => svc.create(input)))
+  },
+}
 
 afterEach(async () => {
   await Instance.disposeAll()
@@ -23,11 +34,11 @@ describe("session.list with sdk directory", () => {
     const key = `worktree-v2-${Date.now()}`
     const root = await Instance.provide({
       directory: tmp.path,
-      fn: async () => Session.create({ title: `${key}-root` }),
+      fn: async () => svc.create({ title: `${key}-root` }),
     })
     const child = await Instance.provide({
       directory: dir,
-      fn: async () => Session.create({ title: `${key}-child` }),
+      fn: async () => svc.create({ title: `${key}-child` }),
     })
 
     const app = Server.Default().app
@@ -56,11 +67,11 @@ describe("session.list with sdk directory", () => {
     const key = `worktree-v1-${Date.now()}`
     const root = await Instance.provide({
       directory: tmp.path,
-      fn: async () => Session.create({ title: `${key}-root` }),
+      fn: async () => svc.create({ title: `${key}-root` }),
     })
     const child = await Instance.provide({
       directory: dir,
-      fn: async () => Session.create({ title: `${key}-child` }),
+      fn: async () => svc.create({ title: `${key}-child` }),
     })
 
     const app = Server.Default().app
@@ -93,11 +104,11 @@ describe("session.list with ancestor directory filtering", () => {
     const key = `ancestor-v2-${Date.now()}`
     const sa = await Instance.provide({
       directory: a,
-      fn: async () => Session.create({ title: `${key}-a` }),
+      fn: async () => svc.create({ title: `${key}-a` }),
     })
     const sb = await Instance.provide({
       directory: b,
-      fn: async () => Session.create({ title: `${key}-b` }),
+      fn: async () => svc.create({ title: `${key}-b` }),
     })
 
     const app = Server.Default().app
@@ -136,11 +147,11 @@ describe("session.list with ancestor directory filtering", () => {
     const key = `ancestor-v1-${Date.now()}`
     const sa = await Instance.provide({
       directory: a,
-      fn: async () => Session.create({ title: `${key}-a` }),
+      fn: async () => svc.create({ title: `${key}-a` }),
     })
     const sb = await Instance.provide({
       directory: b,
-      fn: async () => Session.create({ title: `${key}-b` }),
+      fn: async () => svc.create({ title: `${key}-b` }),
     })
 
     const app = Server.Default().app
