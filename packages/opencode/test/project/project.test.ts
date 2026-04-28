@@ -2,6 +2,7 @@ import { describe, expect, test } from "bun:test"
 import { Project } from "../../src/project"
 import { Log } from "../../src/util"
 import { $ } from "bun"
+import * as fs from "fs/promises"
 import path from "path"
 import { tmpdir } from "../fixture/fixture"
 import { GlobalBus } from "../../src/bus/global"
@@ -173,6 +174,20 @@ describe("Project.fromDirectory with worktrees", () => {
         .quiet()
         .catch(() => {})
     }
+  })
+
+  test("uses nested jj workspace as sandbox while keeping parent git project root", async () => {
+    await using tmp = await tmpdir({ git: true })
+
+    const workspace = path.join(tmp.path, ".dmux", "worktrees", "feature")
+    await fs.mkdir(path.join(workspace, ".jj"), { recursive: true })
+
+    const { project, sandbox } = await run((svc) => svc.fromDirectory(workspace))
+
+    expect(project.worktree).toBe(tmp.path)
+    expect(sandbox).toBe(workspace)
+    expect(project.sandboxes).toContain(workspace)
+    expect(project.sandboxes).not.toContain(tmp.path)
   })
 
   test("worktree should share project ID with main repo", async () => {

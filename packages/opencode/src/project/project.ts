@@ -188,6 +188,9 @@ export const layer: Layer.Layer<
       type DiscoveryResult = { id: ProjectID; worktree: string; sandbox: string; vcs: Info["vcs"] }
 
       const data: DiscoveryResult = yield* Effect.gen(function* () {
+        const dotjj = (yield* fs.up({ targets: [".jj"], start: directory }).pipe(Effect.orDie))[0]
+        const jjRoot = dotjj ? pathSvc.dirname(dotjj) : undefined
+        const activeSandbox = (root: string) => (jjRoot && AppFileSystem.contains(root, jjRoot) ? jjRoot : root)
         const dotgitMatches = yield* fs.up({ targets: [".git"], start: directory }).pipe(Effect.orDie)
         const dotgit = dotgitMatches[0]
 
@@ -208,7 +211,7 @@ export const layer: Layer.Layer<
           return {
             id: id ?? ProjectID.global,
             worktree: sandbox,
-            sandbox,
+            sandbox: activeSandbox(sandbox),
             vcs: fakeVcs,
           }
         }
@@ -218,7 +221,7 @@ export const layer: Layer.Layer<
           return {
             id: id ?? ProjectID.global,
             worktree: sandbox,
-            sandbox,
+            sandbox: activeSandbox(sandbox),
             vcs: fakeVcs,
           }
         }
@@ -246,7 +249,7 @@ export const layer: Layer.Layer<
         }
 
         if (!id) {
-          return { id: ProjectID.global, worktree: sandbox, sandbox, vcs: "git" as const }
+          return { id: ProjectID.global, worktree: sandbox, sandbox: activeSandbox(sandbox), vcs: "git" as const }
         }
 
         const topLevel = yield* git(["rev-parse", "--show-toplevel"], { cwd: sandbox })
@@ -258,7 +261,7 @@ export const layer: Layer.Layer<
             vcs: fakeVcs,
           }
         }
-        sandbox = resolveGitPath(sandbox, topLevel.text.trim())
+        sandbox = activeSandbox(resolveGitPath(sandbox, topLevel.text.trim()))
 
         return { id, sandbox, worktree, vcs: "git" as const }
       })

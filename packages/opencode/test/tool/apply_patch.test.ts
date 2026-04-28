@@ -175,6 +175,33 @@ describe("tool.apply_patch freeform", () => {
     })
   })
 
+  test("uses jj workspace root for display paths", async () => {
+    await using fixture = await tmpdir({ git: true })
+    const { ctx, calls } = makeCtx()
+
+    const workspace = path.join(fixture.path, ".dmux", "worktrees", "feature")
+    await fs.mkdir(path.join(workspace, ".jj"), { recursive: true })
+
+    await Instance.provide({
+      directory: workspace,
+      fn: async () => {
+        await fs.mkdir(path.join(workspace, "src"), { recursive: true })
+        await fs.writeFile(path.join(workspace, "src", "example.ts"), "const value = 1\n", "utf-8")
+
+        const result = await execute(
+          {
+            patchText: "*** Begin Patch\n*** Update File: src/example.ts\n@@\n-const value = 1\n+const value = 2\n*** End Patch",
+          },
+          ctx,
+        )
+
+        expect(calls[0].metadata.files[0]?.relativePath).toBe("src/example.ts")
+        expect(result.output).toContain("M src/example.ts")
+        expect(result.output).not.toContain(".dmux/worktrees/feature")
+      },
+    })
+  })
+
   test("applies multiple hunks to one file", async () => {
     await using fixture = await tmpdir()
     const { ctx } = makeCtx()
