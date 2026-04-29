@@ -2,10 +2,10 @@
 
 - fix/jj-project-discovery (PR #2)
 
-# reference only
+# additional commits to include
 
-These commits were included in `integration-2026-04-28` but are not branch entries.
-Do not count these as branches to merge.
+These commits were included in `integration-2026-04-28` and must also be included in the new integration branch.
+They are listed separately because they are commit refs rather than branch names.
 
 | Commit    | Description                                |
 | --------- | ------------------------------------------ |
