@@ -1,6 +1,6 @@
 # from origin
 
-- fix/jj-project-discovery (PR #2)
+- fix/sse-header-timeout-retry
 
 # additional commits to include
 
