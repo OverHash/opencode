@@ -18,3 +18,21 @@ These commit refs were listed separately in `md/branch-list.md` on the `integrat
 
 - `40c579860`: included `a6cf9e7a9` behavior on the current integration baseline.
 - `1ec24f0a8`: merged `fix/sse-header-timeout-retry` at `97f0245e1`; typecheck passed.
+
+## Comparison to Previous Integration Branch
+
+Previous integration branch: `integration-2026-04-20`
+
+The previous local integration branch does not contain `MERGED-BRANCHES.md`, so a branch-level checklist comparison was not possible.
+
+### Newly Included Branches
+
+- `fix/sse-header-timeout-retry`
+
+### No Longer Included
+
+- Unknown; previous integration branch has no checklist file.
+
+### Same Branch, Different Merged Commit
+
+- Unknown; previous integration branch has no checklist file.
