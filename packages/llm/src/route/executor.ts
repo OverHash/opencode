@@ -361,7 +361,11 @@ export const layer: Layer.Layer<Service, never, HttpClient.HttpClient> = Layer.e
         const redactedNames = yield* Headers.CurrentRedactedNames
         return yield* http
           .execute(request)
-          .pipe(Effect.mapError(toHttpError(redactedNames)), Effect.flatMap(statusError(request, redactedNames)))
+          .pipe(
+            Effect.timeout("10 seconds"),
+            Effect.mapError(toHttpError(redactedNames)),
+            Effect.flatMap(statusError(request, redactedNames)),
+          )
       })
     return Service.of({
       execute: (request) => retryStatusFailures(executeOnce(request)),
