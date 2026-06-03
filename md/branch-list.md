@@ -1,6 +1,6 @@
 # from origin
 
-- fix/sse-header-timeout-retry
+- feat/luau-syntax-highlighting
 
 # additional commits to include
 
