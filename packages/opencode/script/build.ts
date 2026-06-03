@@ -16,6 +16,7 @@ await import("./generate.ts")
 
 import { Script } from "@opencode-ai/script"
 import pkg from "../package.json"
+import type { BunPlugin } from "bun"
 
 // Load migrations from migration directories
 const migrationDirs = (
@@ -51,6 +52,14 @@ const singleFlag = process.argv.includes("--single")
 const baselineFlag = process.argv.includes("--baseline")
 const skipInstall = process.argv.includes("--skip-install")
 const plugin = createSolidTransformPlugin()
+const pinnedOpentuiCore: BunPlugin = {
+  name: "pinned-opentui-core",
+  setup(build) {
+    build.onResolve({ filter: /^@opentui\/core(?:\/.*)?$/ }, (args) => ({
+      path: fileURLToPath(import.meta.resolve(args.path)),
+    }))
+  },
+}
 const skipEmbedWebUi = process.argv.includes("--skip-embed-web-ui")
 
 const createEmbeddedWebUIBundle = async () => {
@@ -195,7 +204,7 @@ for (const item of targets) {
   await Bun.build({
     conditions: ["browser"],
     tsconfig: "./tsconfig.json",
-    plugins: [plugin],
+    plugins: [pinnedOpentuiCore, plugin],
     external: ["node-gyp"],
     format: "esm",
     minify: true,
