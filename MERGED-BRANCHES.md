@@ -4,7 +4,7 @@
 
 | Status | # | Branch Name | Remote | Commit Hash | Description |
 | ------ | - | ----------- | ------ | ----------- | ----------- |
-| ☐ | 1 | feat/luau-syntax-highlighting | origin | TBD | MUST use only local copy, do NOT pull from origin |
+| ☑ | 1 | feat/luau-syntax-highlighting | origin | 03c58ce4f | Clean merge; typecheck passed; Luau parser and language entries verified |
 
 ## Additional Required Commits
 
@@ -17,3 +17,4 @@ These commit refs were listed separately in `md/branch-list.md` because they are
 ## Merge Log
 
 - Initial checklist created before merging any branches or commit refs.
+- Merged `feat/luau-syntax-highlighting` at merge commit `03c58ce4f`. No conflicts. Typecheck passed.
