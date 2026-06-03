@@ -1,3 +1,5 @@
+import luauWasm from "./assets/tree-sitter/tree-sitter-luau.wasm" with { type: "file" }
+
 export default {
   // NOTE: FOR markdown, javascript and typescript, we use the opentui built-in parsers
   // Warn: when taking queries from the nvim-treesitter repo, make sure to include the query dependencies as well
@@ -228,6 +230,15 @@ export default {
           "https://raw.githubusercontent.com/tree-sitter-grammars/tree-sitter-lua/v0.5.0/queries/highlights.scm",
         ],
         locals: ["https://raw.githubusercontent.com/tree-sitter-grammars/tree-sitter-lua/v0.5.0/queries/locals.scm"],
+      },
+    },
+    {
+      filetype: "luau",
+      wasm: luauWasm,
+      queries: {
+        highlights: [
+          "https://raw.githubusercontent.com/4teapo/tree-sitter-luau/4f09f79945de3d5575b079103d86a515030c62ab/queries/highlights.scm",
+        ],
       },
     },
     {
