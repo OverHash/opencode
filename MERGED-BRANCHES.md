@@ -6,7 +6,7 @@ Base release: `v1.15.13`
 
 | Status | #   | Branch Name                   | Remote | Commit Hash | Description |
 | ------ | --- | ----------------------------- | ------ | ----------- | ----------- |
-| ☐      | 1   | feat/luau-syntax-highlighting | origin | TBD         |             |
+| ☑      | 1   | feat/luau-syntax-highlighting | origin | 20c3e1e1d   | Merged cleanly; typecheck passed. |
 
 ## Additional Commit Refs
 
