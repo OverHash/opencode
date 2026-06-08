@@ -367,6 +367,42 @@ describe("HttpApi SDK", () => {
       }),
   )
 
+  httpapiInstance(
+    "does not implicitly filter session list by SDK directory",
+    { serverPath: "raw", setup: writeStandardFiles },
+    ({ directory }) =>
+      Effect.gen(function* () {
+        const fs = yield* FSUtil.Service
+        const dir = path.join(directory, ".dmux", "worktrees", "a")
+        yield* fs.writeWithDirs(path.join(dir, ".keep"), "")
+
+        const sdkV1Module = yield* call(() => import("@opencode-ai/sdk"))
+        const rootV2 = yield* client("raw", directory)
+        const childV2 = yield* client("raw", dir)
+        const rootV1 = sdkV1Module.createOpencodeClient({
+          baseUrl: "http://localhost",
+          directory,
+          fetch: yield* serverFetch("raw"),
+        })
+        const childV1 = sdkV1Module.createOpencodeClient({
+          baseUrl: "http://localhost",
+          directory: dir,
+          fetch: yield* serverFetch("raw"),
+        })
+
+        const key = `worktree-sdk-${Date.now()}`
+        const root = yield* call(() => rootV2.session.create({ title: `${key}-root` }))
+        const child = yield* call(() => childV2.session.create({ title: `${key}-child` }))
+        const v2List = yield* call(() => childV2.session.list({ search: key }))
+        const v1List = yield* call(() => childV1.session.list())
+        yield* call(() => rootV1.session.list())
+
+        const expected = [record(root.data).id, record(child.data).id]
+        expect(array(v2List.data).map((item) => record(item).id)).toEqual(expect.arrayContaining(expected))
+        expect(array(v1List.data).map((item) => record(item).id)).toEqual(expect.arrayContaining(expected))
+      }),
+  )
+
   serverPathParity("matches generated SDK global and control behavior", (serverPath) =>
     Effect.gen(function* () {
       const sdk = yield* client(serverPath)

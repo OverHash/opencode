@@ -12,4 +12,4 @@ Base release: `v1.15.13`
 
 | Status  | #   | Commit    | Description                                |
 | ------- | --- | --------- | ------------------------------------------ |
-| Pending | 1   | a6cf9e7a9 | config: default to shared opencode.db path |
+| Included | 1   | a6cf9e7a9 | config: default to shared opencode.db path; merged commit ref, kept newer desktop package layout, ported SDK session-list regression test, typecheck passed. |
