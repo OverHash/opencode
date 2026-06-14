@@ -16,3 +16,19 @@
 
 - Merged `feat/luau-syntax-highlighting` at `20c3e1e1d`; resolved parser config relocation conflict by preserving the current TUI parser config location.
 - Cherry-picked approved standalone commit `a6cf9e7a9`; Git reused a recorded resolution for `packages/core/src/flag/flag.ts`, preserving the current flag layout while adding the commit's channel DB defaults.
+
+## Comparison to Previous Integration Branch
+
+Previous integration branch: `integration/2026-06-08-18-31`
+
+### Newly Included Branches
+
+- None
+
+### No Longer Included
+
+- None
+
+### Same Branch, Different Merged Commit
+
+- None
