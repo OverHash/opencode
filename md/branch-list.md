@@ -9,4 +9,4 @@ They are listed separately because they are commit refs rather than branch names
 
 | Commit    | Description                                |
 | --------- | ------------------------------------------ |
-| a6cf9e7a9 | config: default to shared opencode.db path |
+| b927888ae | fix(core): default to shared channel database |
