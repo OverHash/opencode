@@ -10,8 +10,9 @@
 
 | Status  | #   | Commit    | Description                                |
 | ------- | --- | --------- | ------------------------------------------ |
-| Pending | 1   | a6cf9e7a9 | config: default to shared opencode.db path |
+| Applied | 1   | a6cf9e7a9 | config: default to shared opencode.db path |
 
 ## Merge Log
 
 - Merged `feat/luau-syntax-highlighting` at `20c3e1e1d`; resolved parser config relocation conflict by preserving the current TUI parser config location.
+- Cherry-picked approved standalone commit `a6cf9e7a9`; Git reused a recorded resolution for `packages/core/src/flag/flag.ts`, preserving the current flag layout while adding the commit's channel DB defaults.
