@@ -241,6 +241,13 @@ export default {
       },
     },
     {
+      filetype: "luau",
+      wasm: "https://github.com/OverHash/tree-sitter-luau/releases/download/v0.1.2/tree-sitter-luau.wasm",
+      queries: {
+        highlights: ["https://raw.githubusercontent.com/OverHash/tree-sitter-luau/v0.1.2/queries/highlights.scm"],
+      },
+    },
+    {
       filetype: "ocaml",
       wasm: "https://github.com/tree-sitter/tree-sitter-ocaml/releases/download/v0.24.2/tree-sitter-ocaml.wasm",
       queries: {
