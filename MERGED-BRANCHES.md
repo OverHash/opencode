@@ -4,5 +4,5 @@
 
 | Status | #   | Branch Name                   | Remote | Commit Hash | Description |
 | ------ | --- | ----------------------------- | ------ | ----------- | ----------- |
-| ☐      | 1   | feat/luau-syntax-highlighting | origin | TBD         |             |
+| ☑      | 1   | feat/luau-syntax-highlighting | origin | 8c98a0cc3   | Resolved package version metadata conflicts in favor of v1.17.18 base. |
 | ☐      | 2   | channel-db                    | origin | TBD         |             |
