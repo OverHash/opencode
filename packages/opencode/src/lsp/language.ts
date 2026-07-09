@@ -55,6 +55,7 @@ export const LANGUAGE_EXTENSIONS: Record<string, string> = {
   ".latex": "latex",
   ".less": "less",
   ".lua": "lua",
+  ".luau": "luau",
   ".makefile": "makefile",
   makefile: "makefile",
   ".md": "markdown",
